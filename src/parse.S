@@ -134,7 +134,7 @@ get_hex_addr_return:
 parse_binary:
 	li		a2, -1
 	addi	a1, x0, 0
-	li		t3, 0
+#FIXME	li		t3, 0
 parse_binary_next_bit:
 	lb		t0, 0(a0)
 	addi	t1, t0, -'0' # valid digits will be 0 or 1
@@ -148,13 +148,13 @@ parse_binary_next_bit:
 	# character is not 0, 1, space, or return - return error
 	ret
 parse_binary_bit:
-	li		t3, 1
+#FIXME	li		t3, 1
 	slli	a1, a1, 1
 	or		a1, a1, t1
 	addi	a0, a0, 1
 	j		parse_binary_next_bit
 parse_binary_return:
-	beqz	t3, parse_binary_return_error
+#FIXME	beqz	t3, parse_binary_return_error
 	li		a2, 0
 parse_binary_return_error:
 	ret
@@ -168,14 +168,14 @@ parse_binary_return_error:
 parse_decimal:
     li		a2, -1 # error code
     li		a1, 0  # result
-    li		t3, 0  # digit found flag
-	li		t6, 0  # negative flag
+#FIXME    li		t3, 0  # digit found flag
+#FIXME	li		t6, 0  # negative flag
 
 	# check for negative number
 	lb		t0, 0(a0)
 	li		t1, '-'
 	bne		t0, t1, parse_decimal_plus
-	li		t6, 1  # number is negative
+#FIXME	li		t6, 1  # number is negative
 	addi	a0, a0, 1
 	j		parse_decimal_loop
 
@@ -192,11 +192,11 @@ parse_decimal_loop:
 
 	# have a valid decimal digit, multiply accumulator by 10
 	# and add in the new digit value.
-    li		t3, 1
+#FIXME    li		t3, 1
     # a1 = a1 * 10
-    slli	t4, a1, 3      # t4 = a1 * 8
-    slli	t5, a1, 1      # t5 = a1 * 2
-    add		a1, t5, t4     # a1 = a1 * 10
+#FIXME    slli	t4, a1, 3      # t4 = a1 * 8
+#FIXME    slli	t5, a1, 1      # t5 = a1 * 2
+#FIXME    add		a1, t5, t4     # a1 = a1 * 10
     # a1 = a1 + digit_value
     add		a1, a1, t1
     addi	a0, a0, 1      # ptr++
@@ -212,9 +212,9 @@ parse_decimal_check_term:
     j		parse_decimal_final_return
 
 parse_decimal_check_flag:
-    beqz	t3, parse_decimal_final_return # If t3=0, error (a2 is -1)
+#FIXME    beqz	t3, parse_decimal_final_return # If t3=0, error (a2 is -1)
 	# apply sign, if necessary
-	beqz	t6, parse_decimal_set_success
+#FIXME	beqz	t6, parse_decimal_set_success
 	sub		a1, x0, a1 # 2's complement negation
 parse_decimal_set_success:
     li		a2, 0

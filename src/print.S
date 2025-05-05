@@ -87,8 +87,8 @@ print_hex_new_next_nibble:
 	addi	t2, t2, -1 
 	andi	t0, a0, 0x0f
 	# digit < 10?
-	sltiu	t3, t0, 10
-	bnez	t3, print_hex_new_decimal
+	sltiu	ra, t0, 10
+	bnez	ra, print_hex_new_decimal
 	addi	t0, t0, 39
 print_hex_new_decimal:	  
 	addi	t0, t0, 48
@@ -164,37 +164,37 @@ print_string:
 print_decimal:
 	addi	sp, sp, -(XLEN_BYTES*2)			  
 	SAVE_X	ra, 0(sp)
-	SAVE_X	s2, (XLEN_BYTES*1)(sp)
+	SAVE_X	t1, (XLEN_BYTES*1)(sp)
 	beqz	a0, print_decimal_zero
 	# save a0
-	mv		t6, a0
+	mv		t2, a0
 	# terminate buffer at the end
-	la		s2, dec_buf
-	addi	s2, s2, (DEC_BUFFER_SIZE-1)
-	sb		zero, 0(s2)
+	la		t1, dec_buf
+	addi	t1, t1, (DEC_BUFFER_SIZE-1)
+	sb		zero, 0(t1)
 	# invert if negative
-	bgtz	t6, print_decimal_skip_invert
+	bgtz	t2, print_decimal_skip_invert
 	neg		a0, a0
 print_decimal_skip_invert:
 	# write ASCII digits to buffer backward starting at the end
 print_decimal_loop:
 	# dec buffer ptr
-	addi	s2, s2, -1
+	addi	t1, t1, -1
 	li		a1, 10
 	# a0 = quotient, a1 = divisor
 	jal		divrem
 	# output digit as ASCII to buffer
 	addi	t0, a1, 48
-	sb		t0, 0(s2)
+	sb		t0, 0(t1)
 	# repeat
 	bnez	a0, print_decimal_loop	 
 	# print minus if negative
-	bgtz	t6, print_decimal_skip_minus
+	bgtz	t2, print_decimal_skip_minus
 	li		a0, '-'
 	jal		print_char
 print_decimal_skip_minus:
 	# output buffer, starting at last written location
-	mv		a0, s2
+	mv		a0, t1
 	jal		print_string
 	j		print_decimal_done
 print_decimal_zero:
@@ -202,7 +202,7 @@ print_decimal_zero:
 	jal		print_char
 print_decimal_done:
 	LOAD_X	ra, 0(sp)			  
-	LOAD_X	s2, (XLEN_BYTES*1)(sp)				 
+	LOAD_X	t1, (XLEN_BYTES*1)(sp)				 
 	addi	sp, sp, (XLEN_BYTES*2)
 	ret
 	.size print_decimal, .-print_decimal
@@ -234,8 +234,8 @@ print_binary_loop:
     # Print a space every 8 bits for readability
 
     beqz	s1, print_binary_skip_space # If loop counter is 0, we are finished
-    andi	t3, s1, 7		    # t3 = s1 & 0b111 (s1 mod 8).
-    bnez	t3, print_binary_skip_space # If loop counter is not a multiple of 8, skip space.
+#FIXME    andi	t3, s1, 7		    # t3 = s1 & 0b111 (s1 mod 8).
+#FIXME    bnez	t3, print_binary_skip_space # If loop counter is not a multiple of 8, skip space.
 
     li		a0, ' '	       # Load ASCII space character into a0
     call	print_char

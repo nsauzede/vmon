@@ -19,9 +19,9 @@
 #define BARE_METAL
 
 // which user commands shall be in the binary?
-#define WITH_CMD_A		// assemble	
+//#define WITH_CMD_A		// assemble	
 #define WITH_CMD_C		// copy memory	
-#define WITH_CMD_D		// disassemble	
+//#define WITH_CMD_D		// disassemble	
 #define WITH_CMD_F		// find
 #define WITH_CMD_G		// go
 #define WITH_CMD_H		// help
@@ -36,7 +36,7 @@
 
 // include test code in the binary?
 // if yes, the "i" command shows the location at runtime
-#define WITH_TESTCODE
+//#define WITH_TESTCODE
 
 // configure which parts of the test code will be present
 // in the executable
@@ -45,9 +45,9 @@
 #define WITH_TESTCODE_RVM
 #define WITH_TESTCODE_RVA
 #define WITH_TESTCODE_RVF
-#define WITH_TESTCODE_RVD
+//#define WITH_TESTCODE_RVD
 #define WITH_TESTCODE_RVQ
-#define WITH_TESTCODE_RVC
+//#define WITH_TESTCODE_RVC
 //#define WITH_TESTCODE_RVB
 //#define WITH_TESTCODE_RVP
 #define WITH_TESTCODE_RVV
@@ -62,9 +62,9 @@
 #define ENABLE_RVM
 #define ENABLE_RVA
 #define ENABLE_RVF
-#define ENABLE_RVD
+//#define ENABLE_RVD
 #define ENABLE_RVQ
-#define ENABLE_RVC
+//#define ENABLE_RVC
 //#define ENABLE_RVB
 //#define ENABLE_RVP
 //#define ENABLE_RVV

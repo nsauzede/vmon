@@ -95,7 +95,7 @@ uart_output_buffer:
 	addi	sp, sp, -(XLEN_BYTES*1)				
 	SAVE_X	ra, 0(sp)
 	la		t1, out_buf	 
-	li		t4, UART_BASE
+	li		t2, UART_BASE
 uart_output_buffer_next_byte:
 	# TODO: output in blocks of x bytes? use FIFO?
 	lbu		t0, 0(t1)					# get next byte from buffer
@@ -105,11 +105,11 @@ uart_output_buffer_next_byte:
 	# TODO: use interrupts 
 	li		t2, UART_BASE  
 uart_output_buffer_wait_lsr:
-	lbu		t3, UART_REG_LSR(t2)
-	andi	t3, t3, 0b00100000 
-	beqz	t3, uart_output_buffer_wait_lsr
+	lbu		ra, UART_REG_LSR(t2)
+	andi	ra, ra, 0b00100000 
+	beqz	ra, uart_output_buffer_wait_lsr
 	# UART is now ready to receive data for TX
-	sb		t0, UART_REG_THR(t4)				   # print byte to UART
+	sb		t0, UART_REG_THR(t2)				   # print byte to UART
 	addi	t1, t1, 1
 	j		uart_output_buffer_next_byte
 uart_output_buffer_done:
